@@ -4,8 +4,11 @@
 // directory. You can also find a detailed instruction on how to add platforms in the `pubspec.yaml` at https://flutter.dev/docs/development/packages-and-plugins/developing-packages#plugin-platforms.
 
 import 'dart:async';
+import 'dart:typed_data';
 import 'package:meta/meta.dart';
 import 'package:flutter_id3_reader_platform_interface/flutter_id3_reader_platform_interface.dart';
+export 'package:flutter_id3_reader_platform_interface/flutter_id3_reader_platform_interface.dart'
+    show SongInfo, TagResponse;
 
 class FlutterId3Reader {
   static Future<TagResponse> getTag(
@@ -18,5 +21,23 @@ class FlutterId3Reader {
       remote: remote,
     ));
     return tag;
+  }
+
+  static Future<Uint8List> getAlbumArt(
+    String path, {
+    @required bool remote,
+  }) async {
+    final Uint8List tag =
+        await FlutterId3ReaderPlatform.instance.getAlbumArt(TagRequest(
+      filePath: path,
+      remote: remote,
+    ));
+    return tag;
+  }
+
+  static Future<List<SongInfo>> getSongs() async {
+    final List<SongInfo> tags =
+        await FlutterId3ReaderPlatform.instance.getSongs();
+    return tags;
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:flutter/services.dart';
 
@@ -15,5 +16,44 @@ class MethodChannelFlutterId3Reader extends FlutterId3ReaderPlatform {
         .invokeMapMethod<String, dynamic>('getTag', request.toMap());
     final TagResponse response = TagResponse.fromMap(data);
     return response;
+  }
+
+  @override
+  Future<Uint8List> getAlbumArt(TagRequest request) async {
+    Uint8List data =
+        await _mainChannel.invokeMethod<Uint8List>('getTag', request.toMap());
+
+    return data;
+  }
+
+  @override
+  Future<List<SongInfo>> getSongs() async {
+    List<Map<dynamic, dynamic>> data = await _mainChannel
+        .invokeListMethod<Map<dynamic, dynamic>>('getPhoneMusicTags');
+    if (data == null) {
+      return <SongInfo>[];
+    }
+
+    return data.map((Map<dynamic, dynamic> item) {
+      return SongInfo(
+        id: item['id'] as int,
+        title: item['title'] as String,
+        album: item['album'] as String,
+        albumId: item['albumId'] as int,
+        artist: item['artist'] as String,
+        artistId: item['artist'] as int,
+        duration: item['duration'] as int,
+        bookmark: item['bookmark'] as int,
+        fileUri: item['fileUri'] as String,
+        absolutePath: item['absolutePath'] as String,
+        isMusic: item['isMusic'] as bool,
+        isPodcast: item['isPodcast'] as bool,
+        isRingtone: item['isRingtone'] as bool,
+        isAlarm: item['isAlarm'] as bool,
+        isNotification: item['isNotification'] as bool,
+        fileSize: item['size'] as int,
+        year: item['year'] as int,
+      );
+    }).toList();
   }
 }

@@ -11,7 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  permission_handler: 5.1.0+2
   flutter_id3_reader:
     # When depending on this package from a real application you should use:
     #   flutter_id3_reader: ^x.y.z
