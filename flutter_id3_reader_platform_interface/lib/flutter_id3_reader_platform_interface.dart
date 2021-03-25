@@ -26,6 +26,21 @@ class TagRequest {
   String toString() => 'TagRequest(filePath: $filePath, remote: $remote)';
 }
 
+class AlbumArtRequest {
+  final int mediaId;
+
+  AlbumArtRequest({
+    @required this.mediaId,
+  });
+
+  Map<dynamic, dynamic> toMap() => {
+    'mediaId': mediaId,
+  };
+
+  @override
+  String toString() => 'AlbumArtRequest(mediaId: $mediaId)';
+}
+
 class TagResponse {
   final String title;
   final String artist;
@@ -315,7 +330,7 @@ abstract class FlutterId3ReaderPlatform extends PlatformInterface {
     throw UnimplementedError('getSongs() has not been implemented.');
   }
 
-  Future<Uint8List> getAlbumArt(TagRequest request) {
+  Future<Uint8List> getAlbumArt(AlbumArtRequest request) {
     throw UnimplementedError('getAlbumArt() has not been implemented.');
   }
 }

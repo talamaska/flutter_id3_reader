@@ -1,7 +1,10 @@
 package com.pehlivanov.zlati.flutter_id3_reader
 
+import android.content.ContentUris
 import android.content.Context
 import android.media.MediaMetadataRetriever
+import android.net.Uri
+import android.provider.MediaStore
 import android.util.Log
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodCall
@@ -10,8 +13,8 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 
 
 class MainMethodCallHandler(
-    private val applicationContext: Context,
-    private val messenger: BinaryMessenger
+        private val applicationContext: Context,
+        private val messenger: BinaryMessenger
 ) : MethodCallHandler {
 
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
@@ -28,26 +31,26 @@ class MainMethodCallHandler(
                 }
 
                 val duration: String =
-                    metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
+                        metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
                 val title: String =
-                    metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE)
+                        metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE)
                 val album: String =
-                    metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM)
+                        metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM)
                 val artist: String =
-                    metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST)
-               
+                        metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST)
+
 
                 val artBytes: ByteArray = metaRetriever.embeddedPicture
 
                 val dur: Int = duration.toInt()
 
                 val resMap = mapOf(
-                    "title" to title,
-                    "album" to album,
-                    "artist" to artist,
-                    "duration" to dur,
-                    "albumArt" to artBytes,
-                    "fileUri" to filePath
+                        "title" to title,
+                        "album" to album,
+                        "artist" to artist,
+                        "duration" to dur,
+                        "albumArt" to artBytes,
+                        "fileUri" to filePath
                 )
 
                 result.success(resMap)
@@ -61,41 +64,56 @@ class MainMethodCallHandler(
                 val resList = mutableListOf<Map<String, Any>>()
                 songs.forEach {
                     resList.add(
-                        mapOf(
-                            "id" to it.id,
-                            "title" to it.title,
-                            "artist" to it.artist,
-                            "artistId" to it.artistId,
-                            "album" to it.album,
-                            "albumId" to it.albumId,
-                            "duration" to it.duration,
-                            "bookmark" to it.bookmark,
-                            "year" to it.year,
-                            "fileUri" to it.fileUri,
-                            "fileSize" to it.fileSize,
-                            "absolutePath" to it.absolutePath,
-                            "isMusic" to it.isMusic,
-                            "isPodcast" to it.isPodcast,
-                            "isRingtone" to it.isRingtone,
-                            "isAlarm" to it.isAlarm,
-                            "isNotification" to it.isNotification
-                        )
+                            mapOf(
+                                    "id" to it.id,
+                                    "title" to it.title,
+                                    "artist" to it.artist,
+                                    "artistId" to it.artistId,
+                                    "album" to it.album,
+                                    "albumId" to it.albumId,
+                                    "duration" to it.duration,
+                                    "bookmark" to it.bookmark,
+                                    "year" to it.year,
+                                    "fileUri" to it.fileUri,
+                                    "fileSize" to it.fileSize,
+                                    "absolutePath" to it.absolutePath,
+                                    "isMusic" to it.isMusic,
+                                    "isPodcast" to it.isPodcast,
+                                    "isRingtone" to it.isRingtone,
+                                    "isAlarm" to it.isAlarm,
+                                    "isNotification" to it.isNotification
+                            )
                     )
                 }
 
                 result.success(resList)
             }
             "getAlbumArt" -> {
-                val filePath = request.get<Any?, Any?>("filePath") as String
-                val remote = request.get<Any?, Any?>("remote") as Boolean
-                val metaRetriever = MediaMetadataRetriever()
-                if (remote) {
-                    metaRetriever.setDataSource(filePath, HashMap())
+                val mediaIdObject = request.get<Any?, Any?>("mediaId")
+                val mediaId: Long = (mediaIdObject as Int).toLong();
+
+                // The type of object that comes in is dependant on the size of the
+                // value.
+
+                // The type of object that comes in is dependant on the size of the
+                // value.
+                /*
+                mediaId = if (mediaIdObject is Integer) {
+                    Long(mediaIdObject as Integer?)
+                } else if (mediaIdObject is Short) {
+                    Long(mediaIdObject as Short?)
+                } else if (mediaIdObject is Byte) {
+                    Long(mediaIdObject as Byte?)
                 } else {
-                    metaRetriever.setDataSource(filePath)
+                    mediaIdObject as Long
                 }
 
-                val artBytes: ByteArray = metaRetriever.embeddedPicture
+                */
+
+                val metaRetriever = MediaMetadataRetriever()
+                val fileUri: Uri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, mediaId);
+                metaRetriever.setDataSource(applicationContext, fileUri)
+                val artBytes: ByteArray? = metaRetriever.embeddedPicture
 
                 result.success(artBytes)
             }

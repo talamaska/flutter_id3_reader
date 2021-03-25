@@ -35,9 +35,9 @@ class SongsProvider(context: Context) : Closeable {
     private val contentProviderAudio = context.contentResolver.query(
             audioCollection,
             PROJECTION,
-            selection,
-            selectionArgs,
-            sortOrder
+            null,
+            null,
+            null
     )
 
 
@@ -46,7 +46,6 @@ class SongsProvider(context: Context) : Closeable {
         val results = mutableListOf<SongInfo>()
 
         contentProviderAudio?.takeIf { it.moveToFirst() }?.use { cursor ->
-            val albumArtUri = Uri.parse("content://media/external/audio/albumart")
             do {
                 Log.d("cursor", cursor.getStringValue(MediaStore.Audio.Media.TITLE))
                 val mediaId: Long = cursor.getLongValue(MediaStore.Audio.Media._ID)

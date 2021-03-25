@@ -70,7 +70,7 @@ packages:
     source: path
     version: "0.0.1"
   flutter_id3_reader_platform_interface:
-    dependency: "direct main"
+    dependency: transitive
     description:
       path: "../../flutter_id3_reader_platform_interface"
       relative: true

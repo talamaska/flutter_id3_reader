@@ -1,11 +1,7 @@
-import 'dart:io';
-
-import 'package:flutter/material.dart';
 import 'dart:async';
-
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_id3_reader/flutter_id3_reader.dart';
-import 'package:flutter_id3_reader_platform_interface/flutter_id3_reader_platform_interface.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 void main() {
@@ -41,6 +37,13 @@ class _MyAppState extends State<MyApp> {
     } on PlatformException {
       print('Failed to get id3.');
     }
+  }
+
+  Future<void> getAlbumArt() async {
+    var test = await FlutterId3Reader.getAlbumArt(
+        mediaId: 31
+    );
+    print('test art $test');
   }
 
   Future<void> getPhoneTags() async {
@@ -85,6 +88,12 @@ class _MyAppState extends State<MyApp> {
             child: Text('get all tags'),
             onPressed: () {
               getPhoneTags();
+            },
+          ),
+          RaisedButton(
+            child: Text('get Album Art'),
+            onPressed: () {
+              getAlbumArt();
             },
           ),
           if (songInfo != null) Image.memory(songInfo.albumArt),
