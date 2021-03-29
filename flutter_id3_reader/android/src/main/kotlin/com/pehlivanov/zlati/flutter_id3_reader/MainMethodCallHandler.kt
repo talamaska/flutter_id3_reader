@@ -92,24 +92,6 @@ class MainMethodCallHandler(
                 val mediaIdObject = request.get<Any?, Any?>("mediaId")
                 val mediaId: Long = (mediaIdObject as Int).toLong();
 
-                // The type of object that comes in is dependant on the size of the
-                // value.
-
-                // The type of object that comes in is dependant on the size of the
-                // value.
-                /*
-                mediaId = if (mediaIdObject is Integer) {
-                    Long(mediaIdObject as Integer?)
-                } else if (mediaIdObject is Short) {
-                    Long(mediaIdObject as Short?)
-                } else if (mediaIdObject is Byte) {
-                    Long(mediaIdObject as Byte?)
-                } else {
-                    mediaIdObject as Long
-                }
-
-                */
-
                 val metaRetriever = MediaMetadataRetriever()
                 val fileUri: Uri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, mediaId);
                 metaRetriever.setDataSource(applicationContext, fileUri)

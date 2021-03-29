@@ -58,9 +58,11 @@ packages:
   flutter_id3_reader_platform_interface:
     dependency: "direct main"
     description:
-      path: "../flutter_id3_reader_platform_interface"
-      relative: true
-    source: path
+      path: flutter_id3_reader_platform_interface
+      ref: HEAD
+      resolved-ref: "990806f08b02479deb2313ed695401e67b604be4"
+      url: "git@github.com:talamaska/flutter_id3_reader.git"
+    source: git
     version: "2.0.0"
   flutter_test:
     dependency: "direct dev"
