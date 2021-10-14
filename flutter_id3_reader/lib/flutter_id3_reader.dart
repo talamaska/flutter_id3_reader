@@ -9,7 +9,7 @@ export 'package:flutter_id3_reader_platform_interface/flutter_id3_reader_platfor
 class FlutterId3Reader {
   static Future<TagResponse> getTag(
     String path, {
-    bool remote,
+    required bool remote,
   }) async {
     final TagResponse tag =
         await FlutterId3ReaderPlatform.instance.getTag(TagRequest(
@@ -19,8 +19,8 @@ class FlutterId3Reader {
     return tag;
   }
 
-  static Future<Uint8List> getAlbumArt({int mediaId}) async {
-    final Uint8List tag = await FlutterId3ReaderPlatform.instance
+  static Future<Uint8List?> getAlbumArt({required int mediaId}) async {
+    final Uint8List? tag = await FlutterId3ReaderPlatform.instance
         .getAlbumArt(AlbumArtRequest(mediaId: mediaId));
     return tag;
   }

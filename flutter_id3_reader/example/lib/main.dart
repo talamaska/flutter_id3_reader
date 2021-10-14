@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_id3_reader/flutter_id3_reader.dart';
@@ -14,7 +16,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  TagResponse songInfo;
+  TagResponse? songInfo;
   List<SongInfo> songs = [];
 
   @override
@@ -40,9 +42,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> getAlbumArt() async {
-    var test = await FlutterId3Reader.getAlbumArt(
-        mediaId: 31
-    );
+    final Uint8List? test = await FlutterId3Reader.getAlbumArt(mediaId: 31);
     print('test art $test');
   }
 
@@ -78,28 +78,28 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
         ),
         body: Column(children: [
-          RaisedButton(
+          ElevatedButton(
             child: Text('get tag'),
             onPressed: () {
               getTag();
             },
           ),
-          RaisedButton(
+          ElevatedButton(
             child: Text('get all tags'),
             onPressed: () {
               getPhoneTags();
             },
           ),
-          RaisedButton(
+          ElevatedButton(
             child: Text('get Album Art'),
             onPressed: () {
               getAlbumArt();
             },
           ),
-          if (songInfo != null) Image.memory(songInfo.albumArt),
+          if (songInfo != null && songInfo?.albumArt != null)
+            Image.memory(songInfo!.albumArt!),
           if (songs.isNotEmpty)
             ...List.generate(songs.length, (index) => Text(songs[index].title))
-          // Image.file(File(songs[0].albumArt)),
         ]),
       ),
     );

@@ -12,15 +12,16 @@ class MethodChannelFlutterId3Reader extends FlutterId3ReaderPlatform {
 
   @override
   Future<TagResponse> getTag(TagRequest request) async {
-    Map<String, dynamic> data = await _mainChannel
-        .invokeMapMethod<String, dynamic>('getTag', request.toMap());
+    Map<String, dynamic> data = await (_mainChannel
+            .invokeMapMethod<String, dynamic>('getTag', request.toMap())
+        as FutureOr<Map<String, dynamic>>);
     final TagResponse response = TagResponse.fromMap(data);
     return response;
   }
 
   @override
-  Future<Uint8List> getAlbumArt(AlbumArtRequest request) async {
-    Uint8List data = await _mainChannel.invokeMethod<Uint8List>(
+  Future<Uint8List?> getAlbumArt(AlbumArtRequest request) async {
+    Uint8List? data = await _mainChannel.invokeMethod<Uint8List>(
         'getAlbumArt', request.toMap());
 
     return data;
@@ -28,7 +29,7 @@ class MethodChannelFlutterId3Reader extends FlutterId3ReaderPlatform {
 
   @override
   Future<List<SongInfo>> getSongs() async {
-    List<Map<dynamic, dynamic>> data =
+    List<Map<dynamic, dynamic>>? data =
         await _mainChannel.invokeListMethod<Map<dynamic, dynamic>>('getSongs');
     if (data == null) {
       return <SongInfo>[];
