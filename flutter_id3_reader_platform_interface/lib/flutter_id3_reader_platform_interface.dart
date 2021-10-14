@@ -2,8 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:flutter/foundation.dart';
-import 'package:meta/meta.dart' show required;
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import 'method_channel_flutter_id3_reader.dart';
@@ -13,8 +11,8 @@ class TagRequest {
   final bool remote;
 
   TagRequest({
-    @required this.filePath,
-    @required this.remote,
+    required this.filePath,
+    required this.remote,
   });
 
   Map<dynamic, dynamic> toMap() => {
@@ -30,12 +28,12 @@ class AlbumArtRequest {
   final int mediaId;
 
   AlbumArtRequest({
-    @required this.mediaId,
+    required this.mediaId,
   });
 
   Map<dynamic, dynamic> toMap() => {
-    'mediaId': mediaId,
-  };
+        'mediaId': mediaId,
+      };
 
   @override
   String toString() => 'AlbumArtRequest(mediaId: $mediaId)';
@@ -47,14 +45,14 @@ class TagResponse {
   final String album;
   final int duration;
   final String fileUri;
-  final Uint8List albumArt;
+  final Uint8List? albumArt;
 
   TagResponse({
-    @required this.title,
-    @required this.artist,
-    @required this.album,
-    @required this.duration,
-    @required this.fileUri,
+    required this.title,
+    required this.artist,
+    required this.album,
+    required this.duration,
+    required this.fileUri,
     this.albumArt,
   });
 
@@ -70,8 +68,6 @@ class TagResponse {
   }
 
   factory TagResponse.fromMap(Map<String, dynamic> map) {
-    if (map == null) return null;
-
     return TagResponse(
       title: map['title'] as String,
       artist: map['artist'] as String,
@@ -94,23 +90,23 @@ class TagResponse {
 }
 
 class SongInfo {
-  final int id;
-  final String title;
-  final String album;
-  final int albumId;
-  final String artist;
-  final int artistId;
-  final String fileUri;
-  final int duration;
-  final int bookmark;
-  final String absolutePath;
-  final bool isMusic;
-  final bool isPodcast;
-  final bool isRingtone;
-  final bool isAlarm;
-  final bool isNotification;
-  final int fileSize;
-  final int year;
+  final int? id;
+  final String? title;
+  final String? album;
+  final int? albumId;
+  final String? artist;
+  final int? artistId;
+  final String? fileUri;
+  final int? duration;
+  final int? bookmark;
+  final String? absolutePath;
+  final bool? isMusic;
+  final bool? isPodcast;
+  final bool? isRingtone;
+  final bool? isAlarm;
+  final bool? isNotification;
+  final int? fileSize;
+  final int? year;
 
   SongInfo({
     this.id,
@@ -155,8 +151,6 @@ class SongInfo {
   }
 
   factory SongInfo.fromMap(Map<String, dynamic> map) {
-    if (map == null) return null;
-
     return SongInfo(
       id: map['id'],
       title: map['title'],
@@ -252,23 +246,23 @@ class SongInfo {
   }
 
   SongInfo copyWith({
-    int id,
-    String title,
-    String album,
-    int albumId,
-    String artist,
-    int artistId,
-    String fileUri,
-    int duration,
-    int bookmark,
-    String absolutePath,
-    bool isMusic,
-    bool isPodcast,
-    bool isRingtone,
-    bool isAlarm,
-    bool isNotification,
-    int fileSize,
-    int year,
+    int? id,
+    String? title,
+    String? album,
+    int? albumId,
+    String? artist,
+    int? artistId,
+    String? fileUri,
+    int? duration,
+    int? bookmark,
+    String? absolutePath,
+    bool? isMusic,
+    bool? isPodcast,
+    bool? isRingtone,
+    bool? isAlarm,
+    bool? isNotification,
+    int? fileSize,
+    int? year,
   }) {
     return SongInfo(
       id: id ?? this.id,
@@ -292,31 +286,15 @@ class SongInfo {
   }
 }
 
-/// The interface that implementations of flutter_id3_reader must implement.
-///
-/// Platform implementations should extend this class rather than implement it
-/// as `flutter_id3_reader` does not consider newly added methods to be breaking
-/// changes. Extending this class (using `extends`) ensures that the subclass
-/// will get the default implementation, while platform implementations that
-/// `implements` this interface will be broken by newly added
-/// [JustAudioPlatform] methods.
 abstract class FlutterId3ReaderPlatform extends PlatformInterface {
-  /// Constructs a JustAudioPlatform.
   FlutterId3ReaderPlatform() : super(token: _token);
 
   static final Object _token = Object();
 
   static FlutterId3ReaderPlatform _instance = MethodChannelFlutterId3Reader();
 
-  /// The default instance of [FlutterId3ReaderPlatform] to use.
-  ///
-  /// Defaults to [MethodChannelFlutterId3Reader].
   static FlutterId3ReaderPlatform get instance => _instance;
 
-  /// Platform-specific plugins should set this with their own platform-specific
-  /// class that extends [FlutterId3ReaderPlatform] when they register themselves.
-  // TODO(amirh): Extract common platform interface logic.
-  // https://github.com/flutter/flutter/issues/43368
   static set instance(FlutterId3ReaderPlatform instance) {
     PlatformInterface.verifyToken(instance, _token);
     _instance = instance;

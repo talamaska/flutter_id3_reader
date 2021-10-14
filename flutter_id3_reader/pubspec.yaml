@@ -1,0 +1,22 @@
+name: flutter_id3_reader
+description: A new flutter plugin project.
+version: 1.0.0
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_id3_reader_platform_interface: ^1.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        pluginClass: FlutterId3ReaderPlugin
+        package: com.pehlivanov.zlati.flutter_id3_reader
