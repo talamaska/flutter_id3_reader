@@ -30,27 +30,28 @@ class MainMethodCallHandler(
                     metaRetriever.setDataSource(filePath)
                 }
 
-                val duration: String =
+                val albumArt: ByteArray? = metaRetriever.embeddedPicture
+
+                val duration: String? =
                         metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
-                val title: String =
+                val title: String? =
                         metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE)
-                val album: String =
+                val album: String? =
                         metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM)
-                val artist: String =
+                val artist: String? =
                         metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST)
 
 
-                val artBytes: ByteArray = metaRetriever.embeddedPicture
 
-                val dur: Int = duration.toInt()
+                val dur: Int? = duration?.toInt()
 
                 val resMap = mapOf(
                         "title" to title,
                         "album" to album,
                         "artist" to artist,
                         "duration" to dur,
-                        "albumArt" to artBytes,
-                        "fileUri" to filePath
+                        "fileUri" to filePath,
+                        "albumArt" to albumArt
                 )
 
                 result.success(resMap)

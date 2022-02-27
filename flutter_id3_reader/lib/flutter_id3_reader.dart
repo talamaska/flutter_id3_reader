@@ -26,8 +26,8 @@ class FlutterId3Reader {
   }
 
   static Future<List<SongInfo>> getSongs() async {
-    final List<SongInfo> tags =
+    final List<SongInfo> songs =
         await FlutterId3ReaderPlatform.instance.getSongs();
-    return tags;
+    return songs;
   }
 }

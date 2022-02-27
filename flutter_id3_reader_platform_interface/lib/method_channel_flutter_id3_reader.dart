@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:flutter/services.dart';
@@ -7,8 +8,8 @@ import 'flutter_id3_reader_platform_interface.dart';
 
 /// An implementation of [FlutterId3ReaderPlatform] that uses method channels.
 class MethodChannelFlutterId3Reader extends FlutterId3ReaderPlatform {
-  static final _mainChannel =
-      MethodChannel('com.pehlivanov.zlati.flutter_id3_reader.methods');
+  static const _mainChannel =
+      const MethodChannel('com.pehlivanov.zlati.flutter_id3_reader.methods');
 
   @override
   Future<TagResponse> getTag(TagRequest request) async {
@@ -34,27 +35,32 @@ class MethodChannelFlutterId3Reader extends FlutterId3ReaderPlatform {
     if (data == null) {
       return <SongInfo>[];
     }
-
-    return data.map((Map<dynamic, dynamic> item) {
-      return SongInfo(
-        id: item['id'] as int,
-        title: item['title'] as String,
-        album: item['album'] as String,
-        albumId: item['albumId'] as int,
-        artist: item['artist'] as String,
-        artistId: item['artistId'] as int,
-        duration: item['duration'] as int,
-        bookmark: item['bookmark'] as int,
-        fileUri: item['fileUri'] as String,
-        absolutePath: item['absolutePath'] as String,
-        isMusic: item['isMusic'] as bool,
-        isPodcast: item['isPodcast'] as bool,
-        isRingtone: item['isRingtone'] as bool,
-        isAlarm: item['isAlarm'] as bool,
-        isNotification: item['isNotification'] as bool,
-        fileSize: item['size'] as int,
-        year: item['year'] as int,
-      );
-    }).toList();
+    List<SongInfo> response = [];
+    try {
+      response = data.map((Map<dynamic, dynamic> map) {
+        return SongInfo(
+          id: map['id'],
+          title: map['title'],
+          album: map['album'],
+          albumId: map['albumId'],
+          artist: map['artist'],
+          artistId: map['artistId'],
+          fileUri: map['fileUri'],
+          duration: map['duration'],
+          bookmark: map['bookmark'],
+          absolutePath: map['absolutePath'],
+          isMusic: map['isMusic'],
+          isPodcast: map['isPodcast'],
+          isRingtone: map['isRingtone'],
+          isAlarm: map['isAlarm'],
+          isNotification: map['isNotification'],
+          fileSize: map['fileSize'],
+          year: map['year'],
+        );
+      }).toList();
+    } catch (e) {
+      log('exception $e');
+    }
+    return response;
   }
 }

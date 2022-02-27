@@ -39,7 +39,7 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
         ),
         body: Center(
-          child: RaisedButton(
+          child: ElevatedButton(
             child: Text('get tag'),
             onPressed: () {
               getTag();

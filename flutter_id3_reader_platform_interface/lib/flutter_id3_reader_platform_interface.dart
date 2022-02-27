@@ -93,39 +93,39 @@ class SongInfo {
   final int id;
   final String title;
   final String album;
-  final int albumId;
+  final int? albumId;
   final String artist;
-  final int artistId;
+  final int? artistId;
   final String fileUri;
-  final int duration;
-  final int bookmark;
+  final int? duration;
+  final int? bookmark;
   final String absolutePath;
   final bool isMusic;
   final bool isPodcast;
   final bool isRingtone;
   final bool isAlarm;
   final bool isNotification;
-  final int fileSize;
-  final int year;
+  final int? fileSize;
+  final int? year;
 
   SongInfo({
     required this.id,
     required this.title,
     required this.album,
-    required this.albumId,
+    this.albumId,
     required this.artist,
-    required this.artistId,
+    this.artistId,
     required this.fileUri,
-    required this.duration,
-    required this.bookmark,
+    this.duration,
+    this.bookmark,
     required this.absolutePath,
     required this.isMusic,
     required this.isPodcast,
     required this.isRingtone,
     required this.isAlarm,
     required this.isNotification,
-    required this.fileSize,
-    required this.year,
+    this.fileSize,
+    this.year,
   });
 
   Map<String, dynamic> toMap() {
