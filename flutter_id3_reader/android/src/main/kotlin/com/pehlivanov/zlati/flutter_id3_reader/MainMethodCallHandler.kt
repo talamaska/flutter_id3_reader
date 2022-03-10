@@ -59,7 +59,7 @@ class MainMethodCallHandler(
             "getSongs" -> {
                 val provider = SongsProvider(applicationContext)
                 val songs: List<SongInfo> = provider.provideAudioData()
-                Log.d("songs", songs.toString())
+                // Log.d("songs", songs.toString())
                 provider.close()
 
                 val resList = mutableListOf<Map<String, Any>>()

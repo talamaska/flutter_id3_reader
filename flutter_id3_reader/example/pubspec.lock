@@ -68,14 +68,14 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "1.0.2"
+    version: "1.0.3"
   flutter_id3_reader_platform_interface:
     dependency: transitive
     description:
-      path: "../../flutter_id3_reader_platform_interface"
-      relative: true
-    source: path
-    version: "1.0.2"
+      name: flutter_id3_reader_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.3"
   flutter_lints:
     dependency: "direct dev"
     description:

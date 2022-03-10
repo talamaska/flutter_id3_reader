@@ -1,7 +1,7 @@
 name: flutter_id3_reader_platform_interface
 description: A common platform interface for the flutter_id3_reader plugin.
 repository: https://github.com/talamaska/flutter_id3_reader/tree/master/flutter_id3_reader_platform_interface
-version: 1.0.2
+version: 1.0.3
 
 dependencies:
   flutter:

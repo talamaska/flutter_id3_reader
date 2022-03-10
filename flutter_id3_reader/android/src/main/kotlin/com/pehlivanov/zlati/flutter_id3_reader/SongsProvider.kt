@@ -24,7 +24,7 @@ class SongsProvider(context: Context) : Closeable {
     }
 
     @SuppressLint("InlinedApi")
-    val selection = "${MediaStore.Video.Media.DURATION} >= ?"
+    val selection = "${MediaStore.Audio.Media.DURATION} >= ?"
     private val selectionArgs = arrayOf(
             TimeUnit.MILLISECONDS.convert(30, TimeUnit.SECONDS).toString()
     )
@@ -48,6 +48,7 @@ class SongsProvider(context: Context) : Closeable {
         contentProviderAudio?.takeIf { it.moveToFirst() }?.use { cursor ->
             do {
                 Log.d("cursor", cursor.getStringValue(MediaStore.Audio.Media.TITLE))
+                Log.d("cursor", cursor.getStringValue(MediaStore.Audio.Media.ARTIST))
                 val mediaId: Long = cursor.getLongValue(MediaStore.Audio.Media._ID)
                 val fileUri: Uri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, mediaId)
 
@@ -110,10 +111,10 @@ class SongsProvider(context: Context) : Closeable {
 data class SongInfo(
         val id: Int,
         val title: String,
-        val album: String,
-        val albumId: Int,
         val artist: String,
         val artistId: Int,
+        val album: String,
+        val albumId: Int,
         val duration: Int,
         val bookmark: Int,
         val year: Int,
